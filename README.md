@@ -162,7 +162,7 @@ git init
 git add .
 git commit -m "Preparar deploy no Render"
 git branch -M main
-git remote add origin https://github.com/SEU_USUARIO/sistema-dunamis.git
+git remote add origin https://github.com/IlsseDevz/sistema-dunamis.git
 git push -u origin main
 ```
 

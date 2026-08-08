@@ -11,7 +11,7 @@ $ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Pa
 Set-Location $ProjectRoot
 
 # --- CONFIGURE AQUI ---
-$GitHubUser = "SEU_USUARIO_GITHUB"
+$GitHubUser = "IlsseDevz"
 $RepoName = "sistema-dunamis"
 $RenderServiceName = "sistema-dunamis"
 
