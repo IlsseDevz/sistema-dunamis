@@ -1,0 +1,30 @@
+# Render Blueprint — Sistema Dunamis
+# https://render.com/docs/blueprint-spec
+#
+# MySQL: use um serviço externo (Railway, PlanetScale, Aiven, etc.)
+# e preencha DB_URL, DB_USERNAME e DB_PASSWORD no painel do Render.
+
+services:
+  - type: web
+    name: sistema-dunamis
+    runtime: docker
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JPA_DDL_AUTO
+        value: update
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: ADMIN_CONTACTO
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NAME
+        value: Administrador

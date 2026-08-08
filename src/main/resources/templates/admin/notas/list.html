@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Notas')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+                <h1 class="h4 mb-0">Notas</h1>
+                <a href="/admin/notas/nova" class="btn btn-dunamis btn-sm">Registar nota</a>
+            </div>
+
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+            <div class="card card-dunamis">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Aluno</th>
+                            <th class="d-none d-md-table-cell">Disciplina</th>
+                            <th class="d-none d-md-table-cell">Tipo</th>
+                            <th>Nota</th>
+                            <th class="d-none d-md-table-cell">Data</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="n : ${notas}">
+                            <td>
+                                <strong th:text="${n.inscricao.user.fullName}">—</strong>
+                                <div class="d-md-none small text-muted">
+                                    <span th:text="${n.disciplina.name}">—</span>
+                                    ·
+                                    <span th:text="${n.gradeType.label}">—</span>
+                                </div>
+                            </td>
+                            <td class="d-none d-md-table-cell" th:text="${n.disciplina.name}">—</td>
+                            <td class="d-none d-md-table-cell" th:text="${n.gradeType.label}">—</td>
+                            <td><strong th:text="${n.value}">—</strong></td>
+                            <td class="d-none d-md-table-cell"
+                                th:text="${#temporals.format(n.recordedAt, 'dd/MM/yyyy')}">—</td>
+                            <td class="text-end">
+                                <div class="table-actions">
+                                    <a th:href="@{/admin/notas/{id}/editar(id=${n.id})}"
+                                       class="btn btn-sm btn-dunamis-outline">Editar</a>
+                                    <form th:action="@{/admin/notas/{id}/remover(id=${n.id})}" method="post"
+                                          onsubmit="return confirm('Remover esta nota?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Remover</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(notas)}">
+                            <td colspan="6" class="text-center text-muted py-4">Nenhuma nota registada.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

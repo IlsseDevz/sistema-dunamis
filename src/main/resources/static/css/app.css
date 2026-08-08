@@ -1,0 +1,431 @@
+/* Sistema Dunamis — estilos base (mobile-first) */
+
+:root {
+    --dunamis-primary: #1a365d;
+    --dunamis-primary-light: #2c5282;
+    --dunamis-accent: #d69e2e;
+    --dunamis-bg: #f7fafc;
+    --dunamis-text: #2d3748;
+    --dunamis-border: #e2e8f0;
+    --dunamis-focus: rgba(26, 54, 93, 0.25);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background-color: var(--dunamis-bg);
+    color: var(--dunamis-text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0.75rem;
+    z-index: 2000;
+    padding: 0.75rem 1rem;
+    background: var(--dunamis-primary);
+    color: #fff;
+    border-radius: 0 0 0.5rem 0.5rem;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    top: 0;
+    color: #fff;
+}
+
+.navbar-dunamis {
+    background-color: var(--dunamis-primary);
+}
+
+.navbar-dunamis .navbar-brand,
+.navbar-dunamis .nav-link {
+    color: #fff !important;
+}
+
+.navbar-dunamis .nav-link:focus-visible,
+.navbar-dunamis .navbar-brand:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.navbar-dunamis .btn-logout {
+    color: #fff !important;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    text-decoration: none;
+}
+
+.navbar-dunamis .btn-logout:hover,
+.navbar-dunamis .btn-logout:focus {
+    color: #fff !important;
+    opacity: 0.9;
+}
+
+.btn-dunamis {
+    background-color: var(--dunamis-primary);
+    border-color: var(--dunamis-primary);
+    color: #fff;
+    min-height: 44px;
+    padding: 0.625rem 1.25rem;
+}
+
+.btn-dunamis:hover,
+.btn-dunamis:focus,
+.btn-dunamis:active {
+    background-color: var(--dunamis-primary-light) !important;
+    border-color: var(--dunamis-primary-light) !important;
+    color: #fff !important;
+}
+
+.btn-dunamis:focus-visible,
+.btn-dunamis-outline:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible,
+.form-check-input:focus-visible {
+    box-shadow: 0 0 0 0.2rem var(--dunamis-focus);
+}
+
+.btn-dunamis-outline {
+    border-color: var(--dunamis-primary);
+    color: var(--dunamis-primary);
+    min-height: 44px;
+    background-color: #fff;
+}
+
+.btn-dunamis-outline:hover,
+.btn-dunamis-outline:focus {
+    background-color: var(--dunamis-primary);
+    border-color: var(--dunamis-primary);
+    color: #fff;
+}
+
+.card-dunamis {
+    border: 1px solid var(--dunamis-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background: #fff;
+}
+
+.hero-section {
+    padding: 2rem 0;
+}
+
+.hero-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--dunamis-primary);
+}
+
+.hero-subtitle {
+    color: #718096;
+    font-size: 1rem;
+}
+
+.form-control,
+.form-select {
+    min-height: 44px;
+}
+
+.form-check-input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.15rem;
+}
+
+.footer-dunamis {
+    border-top: 1px solid var(--dunamis-border);
+    color: #718096;
+    font-size: 0.875rem;
+    padding: 1.5rem 0;
+    margin-top: auto;
+}
+
+.error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.error-code {
+    font-size: clamp(3rem, 12vw, 4rem);
+    font-weight: 700;
+    color: var(--dunamis-primary);
+    line-height: 1;
+}
+
+.page-header {
+    margin-bottom: 1.5rem;
+}
+
+.page-header-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.page-actions .btn {
+    flex: 1 1 auto;
+}
+
+@media (min-width: 576px) {
+    .page-actions .btn {
+        flex: 0 0 auto;
+    }
+}
+
+/* Painéis laterais */
+.panel-nav {
+    width: 100%;
+}
+
+.panel-menu-toggle {
+    font-weight: 600;
+}
+
+.panel-offcanvas {
+    width: min(100%, 320px);
+}
+
+.panel-offcanvas-header {
+    background-color: var(--dunamis-primary);
+    color: #fff;
+}
+
+.panel-offcanvas .list-group-item {
+    border-radius: 0.5rem;
+    margin-bottom: 0.15rem;
+}
+
+.member-menu-list .list-group-item,
+.admin-menu-list .list-group-item {
+    border: none;
+    padding: 0.75rem 0.75rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.member-menu-list .list-group-item.active,
+.admin-menu-list .list-group-item.active {
+    background-color: var(--dunamis-primary);
+    color: #fff;
+    border-radius: 0.5rem;
+}
+
+.dashboard-stat {
+    background: #fff;
+    border: 1px solid var(--dunamis-border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    height: 100%;
+}
+
+.dashboard-stat-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #718096;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-stat strong {
+    font-size: 0.95rem;
+    color: var(--dunamis-text);
+    word-break: break-word;
+}
+
+.admin-stat-card {
+    background: #fff;
+    border: 1px solid var(--dunamis-border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    height: 100%;
+}
+
+.admin-stat-card-accent {
+    border-color: var(--dunamis-accent);
+}
+
+.admin-stat-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #718096;
+    margin-bottom: 0.35rem;
+}
+
+.admin-stat-card strong {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    color: var(--dunamis-primary);
+    line-height: 1.2;
+}
+
+.admin-stat-card-accent strong {
+    color: var(--dunamis-accent);
+}
+
+.table-responsive {
+    -webkit-overflow-scrolling: touch;
+}
+
+.table td .btn-sm {
+    min-height: 38px;
+    white-space: nowrap;
+}
+
+.table-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.35rem;
+}
+
+@media (max-width: 575.98px) {
+    .table-actions {
+        justify-content: stretch;
+    }
+
+    .table-actions .btn,
+    .table-actions form {
+        flex: 1 1 100%;
+    }
+
+    .table-actions .btn {
+        width: 100%;
+    }
+}
+
+.attendance-row td:nth-child(2),
+.attendance-row td:nth-child(3) {
+    width: 4.5rem;
+    text-align: center;
+}
+
+@media (max-width: 575.98px) {
+    .attendance-table thead {
+        display: none;
+    }
+
+    .attendance-table tbody tr {
+        display: block;
+        border-bottom: 1px solid var(--dunamis-border);
+        padding: 0.75rem 0;
+    }
+
+    .attendance-table tbody td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: none;
+        padding: 0.35rem 0.75rem;
+    }
+
+    .attendance-table tbody td:first-child {
+        font-weight: 600;
+        padding-top: 0.75rem;
+    }
+
+    .attendance-table tbody td:nth-child(2)::before {
+        content: "Presente";
+        color: #718096;
+        font-size: 0.875rem;
+    }
+
+    .attendance-table tbody td:nth-child(3)::before {
+        content: "Ausente";
+        color: #718096;
+        font-size: 0.875rem;
+    }
+}
+
+.alert {
+    border-radius: 0.75rem;
+}
+
+.pagination .page-link {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge {
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .hero-section {
+        padding: 3rem 0;
+    }
+}
+
+@media (min-width: 992px) {
+    .panel-nav .card {
+        position: sticky;
+        top: 1rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    main.container {
+        padding-left: max(0.75rem, env(safe-area-inset-left));
+        padding-right: max(0.75rem, env(safe-area-inset-right));
+    }
+}
+
+@media print {
+    .navbar-dunamis,
+    .panel-nav,
+    .footer-dunamis,
+    .page-actions,
+    .pagination,
+    .btn,
+    form[action*="logout"] {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+    }
+
+    .card-dunamis {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+

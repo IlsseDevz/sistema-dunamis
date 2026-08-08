@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Relatórios')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/siga-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-2">Relatório académico</h1>
+                    <p class="text-muted mb-4">
+                        Escola Bíblica do Pregador Dunamis — resumo individual (PDF na Fase 10).
+                    </p>
+
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Aluno</span>
+                            <strong th:text="${user.fullName}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Turma</span>
+                            <strong th:text="${summary.turmaName} + ' (' + ${summary.turmaYear} + ')'">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Média geral</span>
+                            <strong th:text="${summary.overallAverage != null ? summary.overallAverage : '—'}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Presenças</span>
+                            <strong th:text="${summary.presentCount} + ' / ' + ${summary.totalAttendanceRecords}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Percentagem de presença</span>
+                            <strong th:text="${summary.attendancePercentage} + '%'">—</strong>
+                        </li>
+                    </ul>
+
+                    <div class="alert alert-info mb-0" role="alert">
+                        Os relatórios em PDF serão disponibilizados na Fase 10.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

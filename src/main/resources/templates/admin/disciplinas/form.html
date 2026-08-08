@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${formTitle})}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-4" th:text="${formTitle}">Disciplina</h1>
+
+                    <form th:if="${disciplinaId == null}" th:action="@{/admin/disciplinas/nova}"
+                          th:object="${disciplina}" method="post" novalidate>
+                        <div th:replace="~{admin/disciplinas/form :: fields}"></div>
+                    </form>
+                    <form th:if="${disciplinaId != null}" th:action="@{/admin/disciplinas/{id}/editar(id=${disciplinaId})}"
+                          th:object="${disciplina}" method="post" novalidate>
+                        <div th:replace="~{admin/disciplinas/form :: fields}"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+<div th:fragment="fields">
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome *</label>
+        <input type="text" id="name" th:field="*{name}" class="form-control"
+               th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
+        <div class="invalid-feedback" th:errors="*{name}"></div>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <textarea id="description" th:field="*{description}" class="form-control" rows="3"
+                  th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"></textarea>
+        <div class="invalid-feedback" th:errors="*{description}"></div>
+    </div>
+    <div class="mb-3">
+        <label for="workloadHours" class="form-label">Carga horária (h)</label>
+        <input type="number" id="workloadHours" th:field="*{workloadHours}" class="form-control" min="0"
+               th:classappend="${#fields.hasErrors('workloadHours')} ? 'is-invalid'">
+        <div class="invalid-feedback" th:errors="*{workloadHours}"></div>
+    </div>
+    <div class="d-grid d-sm-flex gap-2">
+        <button type="submit" class="btn btn-dunamis">Guardar</button>
+        <a href="/admin/disciplinas" class="btn btn-dunamis-outline">Cancelar</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Presenças')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+                <h1 class="h4 mb-0">Presenças</h1>
+                <a href="/admin/presencas/registar" class="btn btn-dunamis btn-sm">Registar presenças</a>
+            </div>
+
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+            <div class="card card-dunamis mb-4">
+                <div class="card-body p-3">
+                    <form method="get" action="/admin/presencas" class="row g-2 align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label for="date" class="form-label mb-1">Filtrar por data</label>
+                            <input type="date" id="date" name="date" class="form-control" th:value="${filterDate}">
+                        </div>
+                        <div class="col-12 col-md-3 d-grid">
+                            <button type="submit" class="btn btn-dunamis">Filtrar</button>
+                        </div>
+                        <div class="col-12 col-md-3 d-grid">
+                            <a href="/admin/presencas" class="btn btn-dunamis-outline">Ver todas</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card card-dunamis">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Data</th>
+                            <th>Aluno</th>
+                            <th>Estado</th>
+                            <th class="d-none d-md-table-cell">Observação</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p : ${presencas}">
+                            <td th:text="${#temporals.format(p.attendanceDate, 'dd/MM/yyyy')}">—</td>
+                            <td th:text="${p.inscricao.user.fullName}">—</td>
+                            <td>
+                                <span class="badge"
+                                      th:classappend="${p.present} ? 'text-bg-success' : 'text-bg-secondary'"
+                                      th:text="${p.present} ? 'Presente' : 'Ausente'">—</span>
+                            </td>
+                            <td class="d-none d-md-table-cell text-muted"
+                                th:text="${p.observation != null ? p.observation : '—'}">—</td>
+                            <td class="text-end">
+                                <form th:action="@{/admin/presencas/{id}/remover(id=${p.id})}" method="post"
+                                      onsubmit="return confirm('Remover este registo?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Remover</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(presencas)}">
+                            <td colspan="5" class="text-center text-muted py-4">Nenhuma presença registada.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

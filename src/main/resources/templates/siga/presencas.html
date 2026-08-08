@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Minhas presenças')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/siga-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <h1 class="h4 mb-4">Minhas presenças</h1>
+
+            <div class="row g-3 mb-4">
+                <div class="col-4">
+                    <div class="dashboard-stat text-center">
+                        <span class="dashboard-stat-label">Total</span>
+                        <strong th:text="${summary.totalAttendanceRecords}">0</strong>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="dashboard-stat text-center">
+                        <span class="dashboard-stat-label">Presente</span>
+                        <strong th:text="${summary.presentCount}">0</strong>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="dashboard-stat text-center">
+                        <span class="dashboard-stat-label">Percentagem</span>
+                        <strong th:text="${summary.attendancePercentage} + '%'">0%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-dunamis">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Data</th>
+                            <th>Estado</th>
+                            <th class="d-none d-md-table-cell">Observação</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p : ${presencas}">
+                            <td th:text="${#temporals.format(p.attendanceDate, 'dd/MM/yyyy')}">—</td>
+                            <td>
+                                <span class="badge"
+                                      th:classappend="${p.present} ? 'text-bg-success' : 'text-bg-secondary'"
+                                      th:text="${p.present} ? 'Presente' : 'Ausente'">—</span>
+                            </td>
+                            <td class="d-none d-md-table-cell text-muted"
+                                th:text="${p.observation != null ? p.observation : '—'}">—</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(presencas)}">
+                            <td colspan="3" class="text-center text-muted py-4">
+                                Ainda não existem presenças registadas.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

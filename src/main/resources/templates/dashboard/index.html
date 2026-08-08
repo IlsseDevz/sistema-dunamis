@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/member-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div th:if="${infoMessage}" class="alert alert-info" th:text="${infoMessage}"></div>
+            <div class="card card-dunamis mb-4">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-1">Olá, <span th:text="${user.fullName}">Membro</span></h1>
+                    <p class="text-muted mb-4">Bem-vindo ao seu painel de membro.</p>
+
+                    <div class="row g-3">
+                        <div class="col-6 col-md-3">
+                            <div class="dashboard-stat">
+                                <span class="dashboard-stat-label">Situação</span>
+                                <strong th:text="${user.churchSituation.label}">—</strong>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="dashboard-stat">
+                                <span class="dashboard-stat-label">Bairro</span>
+                                <strong th:text="${user.bairro}">—</strong>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="dashboard-stat">
+                                <span class="dashboard-stat-label">Função</span>
+                                <strong th:text="${user.churchFunction.label}">—</strong>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="dashboard-stat">
+                                <span class="dashboard-stat-label">Batizado</span>
+                                <strong th:text="${user.baptized} ? 'Sim' : 'Não'">—</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-dunamis" th:if="${!enrolled}">
+                <div class="card-body p-4 text-center">
+                    <h2 class="h5 mb-2">Escola Bíblica</h2>
+                    <p class="text-muted mb-4">
+                        Você ainda não está inscrito na Escola Bíblica do Pregador Dunamis.
+                    </p>
+                    <form th:action="@{/dashboard/inscrever-escola}" method="post">
+                        <button type="submit" class="btn btn-dunamis btn-lg w-100 w-sm-auto">
+                            Inscrever-me na Escola Bíblica
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card card-dunamis" th:if="${enrolled}">
+                <div class="card-body p-4 d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                    <div>
+                        <h2 class="h5 mb-1">Escola Bíblica</h2>
+                        <p class="text-muted mb-0">Está inscrito na Escola Bíblica. Aceda ao portal SIGA.</p>
+                    </div>
+                    <a href="/siga" class="btn btn-dunamis">Abrir SIGA</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

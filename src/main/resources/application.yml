@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: sistema-dunamis
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+server:
+  port: ${PORT:8080}
+  error:
+    whitelabel:
+      enabled: false
+
+app:
+  church:
+    name: Igreja Evangélica Dunamis de Jesus Cristo
+  bible-school:
+    name: Escola Bíblica do Pregador Dunamis
+  bootstrap:
+    admin-contacto: ${ADMIN_CONTACTO:}
+    admin-password: ${ADMIN_PASSWORD:}
+    admin-name: ${ADMIN_NAME:Administrador}

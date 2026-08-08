@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Login')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-public}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-6 col-lg-5">
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-3 text-center">Entrar</h1>
+                    <p class="text-muted text-center small mb-4">
+                        Utilize o seu contacto e password.
+                    </p>
+
+                    <div th:if="${param.registered}" class="alert alert-success" role="alert">
+                        Cadastro realizado com sucesso! Faça login com o seu contacto.
+                    </div>
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
+                    <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                        Contacto ou password inválidos.
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                        Sessão encerrada com sucesso.
+                    </div>
+
+                    <form action="/login" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Contacto</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                   placeholder="Ex: 923456789" required autocomplete="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                   required autocomplete="current-password">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-dunamis">Entrar</button>
+                        </div>
+                    </form>
+
+                    <p class="text-center mt-3 mb-0 small">
+                        Ainda não tem conta?
+                        <a href="/cadastro">Cadastre-se</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

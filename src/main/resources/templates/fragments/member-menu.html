@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="menu-items(activeMenu)" class="list-group list-group-flush member-menu-list">
+    <a href="/dashboard"
+       class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'dashboard'} ? 'active'">
+        Início
+    </a>
+    <a href="/dashboard/perfil"
+       class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'perfil'} ? 'active'">
+        Meu perfil
+    </a>
+    <a href="/dashboard/perfil/editar"
+       class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'editar'} ? 'active'">
+        Editar perfil
+    </a>
+    <a sec:authorize="hasRole('STUDENT')" href="/siga"
+       class="list-group-item list-group-item-action">
+        Escola Bíblica (SIGA)
+    </a>
+    <a href="/dashboard/alterar-password"
+       class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'password'} ? 'active'">
+        Alterar password
+    </a>
+    <form th:action="@{/logout}" method="post" class="mt-2">
+        <button type="submit" class="list-group-item list-group-item-action text-danger border-0 w-100 text-start">
+            Sair
+        </button>
+    </form>
+</div>
+
+<nav th:fragment="menu(activeMenu)" class="panel-nav">
+    <div class="d-none d-lg-block">
+        <div class="member-menu card card-dunamis">
+            <div class="card-body p-3">
+                <h2 class="h6 text-uppercase text-muted mb-3">Menu</h2>
+                <div th:replace="~{fragments/member-menu :: menu-items(${activeMenu})}"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-lg-none mb-3">
+        <button type="button" class="btn btn-dunamis-outline w-100 panel-menu-toggle"
+                data-bs-toggle="offcanvas" data-bs-target="#memberPanelMenu"
+                aria-controls="memberPanelMenu">
+            Menu do membro
+        </button>
+    </div>
+
+    <div class="offcanvas offcanvas-start panel-offcanvas d-lg-none" tabindex="-1"
+         id="memberPanelMenu" aria-labelledby="memberPanelMenuLabel">
+        <div class="offcanvas-header panel-offcanvas-header">
+            <h2 class="offcanvas-title h5 mb-0" id="memberPanelMenuLabel">Menu</h2>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                    aria-label="Fechar"></button>
+        </div>
+        <div class="offcanvas-body p-3">
+            <div th:replace="~{fragments/member-menu :: menu-items(${activeMenu})}"></div>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>
+

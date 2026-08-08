@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Editar membro')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-4">Editar membro</h1>
+
+                    <form th:action="@{/admin/membros/{id}/editar(id=${memberId})}" th:object="${memberUpdate}" method="post" novalidate>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="fullName" class="form-label">Nome completo *</label>
+                                <input type="text" id="fullName" th:field="*{fullName}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:errors="*{fullName}"></div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="contacto" class="form-label">Contacto *</label>
+                                <input type="tel" id="contacto" th:field="*{contacto}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('contacto')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:errors="*{contacto}"></div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" th:field="*{email}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:errors="*{email}"></div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="bairro" class="form-label">Bairro *</label>
+                                <input type="text" id="bairro" th:field="*{bairro}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('bairro')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:errors="*{bairro}"></div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="churchSituation" class="form-label">Situação *</label>
+                                <select id="churchSituation" th:field="*{churchSituation}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('churchSituation')} ? 'is-invalid'">
+                                    <option value="">Selecione...</option>
+                                    <option th:each="s : ${churchSituations}" th:value="${s}" th:text="${s.label}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:errors="*{churchSituation}"></div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="churchFunctionId" class="form-label">Função *</label>
+                                <select id="churchFunctionId" th:field="*{churchFunctionId}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('churchFunctionId')} ? 'is-invalid'">
+                                    <option value="">Selecione...</option>
+                                    <option th:each="f : ${churchFunctions}" th:value="${f.id}" th:text="${f.label}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:errors="*{churchFunctionId}"></div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="accountStatus" class="form-label">Estado da conta *</label>
+                                <select id="accountStatus" th:field="*{accountStatus}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('accountStatus')} ? 'is-invalid'">
+                                    <option th:each="st : ${accountStatuses}" th:value="${st}" th:text="${st.label}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:errors="*{accountStatus}"></div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <span class="form-label d-block">Batizado? *</span>
+                                <div class="d-flex gap-3 mt-1">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="baptizedYes"
+                                               th:field="*{baptized}" th:value="true">
+                                        <label class="form-check-label" for="baptizedYes">Sim</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="baptizedNo"
+                                               th:field="*{baptized}" th:value="false">
+                                        <label class="form-check-label" for="baptizedNo">Não</label>
+                                    </div>
+                                </div>
+                                <div class="text-danger small mt-1" th:errors="*{baptized}"></div>
+                            </div>
+                        </div>
+                        <div class="d-grid d-sm-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-dunamis">Guardar</button>
+                            <a th:href="@{/admin/membros/{id}(id=${memberId})}" class="btn btn-dunamis-outline">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

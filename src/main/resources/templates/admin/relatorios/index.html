@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Relatórios')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <h1 class="h4 mb-4">Relatórios PDF</h1>
+
+            <div class="card card-dunamis mb-4">
+                <div class="card-body p-4">
+                    <p class="text-muted mb-4">
+                        Seleccione o mês e o ano para gerar relatórios mensais em PDF da Escola Bíblica ou da igreja.
+                    </p>
+
+                    <form th:object="${period}" method="post" class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <label for="month" class="form-label">Mês</label>
+                            <select id="month" class="form-select" th:field="*{month}"
+                                    th:classappend="${#fields.hasErrors('month')} ? 'is-invalid'">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                            <div class="invalid-feedback" th:errors="*{month}"></div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="year" class="form-label">Ano</label>
+                            <input type="number" id="year" class="form-control" th:field="*{year}" min="2000" max="2100"
+                                   th:classappend="${#fields.hasErrors('year')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:errors="*{year}"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="card card-dunamis h-100">
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h2 class="h5">Escola Bíblica</h2>
+                            <p class="text-muted flex-grow-1">
+                                Total de alunos, presenças, ausências, percentagem de presença e média das notas do período.
+                            </p>
+                            <form th:object="${period}" method="post" action="/admin/relatorios/escola-biblica/pdf">
+                                <input type="hidden" th:field="*{month}">
+                                <input type="hidden" th:field="*{year}">
+                                <button type="submit" class="btn btn-dunamis">Gerar PDF</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="card card-dunamis h-100">
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h2 class="h5">Igreja</h2>
+                            <p class="text-muted flex-grow-1">
+                                Estatísticas de membros, batizados, novos cadastros e distribuição por função na igreja.
+                            </p>
+                            <form th:object="${period}" method="post" action="/admin/relatorios/igreja/pdf">
+                                <input type="hidden" th:field="*{month}">
+                                <input type="hidden" th:field="*{year}">
+                                <button type="submit" class="btn btn-dunamis">Gerar PDF</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script>
+    (function () {
+        const monthSelect = document.getElementById('month');
+        const yearInput = document.getElementById('year');
+        const hiddenFields = document.querySelectorAll('input[type="hidden"][name="month"], input[type="hidden"][name="year"]');
+
+        function syncHiddenFields() {
+            hiddenFields.forEach(function (field) {
+                if (field.name === 'month') {
+                    field.value = monthSelect.value;
+                }
+                if (field.name === 'year') {
+                    field.value = yearInput.value;
+                }
+            });
+        }
+
+        monthSelect.addEventListener('change', syncHiddenFields);
+        yearInput.addEventListener('input', syncHiddenFields);
+        syncHiddenFields();
+    })();
+</script>
+</body>
+</html>

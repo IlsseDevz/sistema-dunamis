@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Minhas disciplinas')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/siga-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <h1 class="h4 mb-4">Minhas disciplinas</h1>
+            <div class="card card-dunamis">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Disciplina</th>
+                            <th class="d-none d-md-table-cell">Carga horária</th>
+                            <th class="d-none d-lg-table-cell">Descrição</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="d : ${disciplinas}">
+                            <td><strong th:text="${d.name}">—</strong></td>
+                            <td class="d-none d-md-table-cell"
+                                th:text="${d.workloadHours != null ? d.workloadHours + ' h' : '—'}">—</td>
+                            <td class="d-none d-lg-table-cell text-muted"
+                                th:text="${d.description != null ? d.description : '—'}">—</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(disciplinas)}">
+                            <td colspan="3" class="text-center text-muted py-4">
+                                Ainda não existem disciplinas na sua turma.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

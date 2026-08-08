@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Turma')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-2">Turma</h1>
+                    <p class="text-muted mb-4">
+                        Nesta versão existe uma turma principal. A estrutura permite várias turmas no futuro.
+                    </p>
+
+                    <form th:action="@{/admin/turma}" th:object="${turmaUpdate}" method="post" novalidate>
+                        <div class="row g-3">
+                            <div class="col-12 col-md-8">
+                                <label for="name" class="form-label">Nome *</label>
+                                <input type="text" id="name" th:field="*{name}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:errors="*{name}"></div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label for="year" class="form-label">Ano *</label>
+                                <input type="number" id="year" th:field="*{year}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('year')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:errors="*{year}"></div>
+                            </div>
+                            <div class="col-12">
+                                <label for="description" class="form-label">Descrição</label>
+                                <textarea id="description" th:field="*{description}" class="form-control" rows="3"
+                                          th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"></textarea>
+                                <div class="invalid-feedback" th:errors="*{description}"></div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label for="status" class="form-label">Status *</label>
+                                <select id="status" th:field="*{status}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('status')} ? 'is-invalid'">
+                                    <option th:each="st : ${turmaStatuses}" th:value="${st}" th:text="${st.label}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:errors="*{status}"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-dunamis">Guardar turma</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

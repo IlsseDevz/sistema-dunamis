@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('SIGA')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/siga-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="mb-4">
+                <h1 class="h4 mb-1">SIGA — Dashboard</h1>
+                <p class="text-muted mb-0">
+                    Olá, <strong th:text="${user.fullName}">Aluno</strong>
+                </p>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-stat">
+                        <span class="dashboard-stat-label">Turma</span>
+                        <strong th:text="${summary.turmaName}">—</strong>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-stat">
+                        <span class="dashboard-stat-label">Disciplinas</span>
+                        <strong th:text="${summary.totalDisciplinas}">0</strong>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-stat">
+                        <span class="dashboard-stat-label">Média geral</span>
+                        <strong th:text="${summary.overallAverage != null ? summary.overallAverage : '—'}">—</strong>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dashboard-stat">
+                        <span class="dashboard-stat-label">Presença</span>
+                        <strong th:text="${summary.attendancePercentage} + '%'">0%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-3">Acesso rápido</h2>
+                    <div class="d-grid d-sm-flex flex-wrap gap-2">
+                        <a href="/siga/notas" class="btn btn-dunamis-outline btn-sm">Ver notas</a>
+                        <a href="/siga/presencas" class="btn btn-dunamis-outline btn-sm">Ver presenças</a>
+                        <a href="/siga/media" class="btn btn-dunamis-outline btn-sm">Ver média</a>
+                        <a href="/siga/relatorios" class="btn btn-dunamis-outline btn-sm">Relatórios</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

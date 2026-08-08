@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${formTitle})}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-4" th:text="${formTitle}">Nota</h1>
+
+                    <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                        <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+                    </div>
+
+                    <form th:if="${gradeId == null}" th:action="@{/admin/notas/nova}" th:object="${grade}" method="post" novalidate>
+                        <div th:replace="~{admin/notas/form :: fields}"></div>
+                    </form>
+                    <form th:if="${gradeId != null}" th:action="@{/admin/notas/{id}/editar(id=${gradeId})}" th:object="${grade}" method="post" novalidate>
+                        <div th:replace="~{admin/notas/form :: fields}"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+
+<div th:fragment="fields">
+    <div class="row g-3">
+        <div class="col-12 col-md-6">
+            <label for="inscricaoId" class="form-label">Aluno *</label>
+            <select id="inscricaoId" th:field="*{inscricaoId}" class="form-select"
+                    th:classappend="${#fields.hasErrors('inscricaoId')} ? 'is-invalid'">
+                <option value="">Selecione...</option>
+                <option th:each="e : ${enrollments}" th:value="${e.id}" th:text="${e.user.fullName}"></option>
+            </select>
+            <div class="invalid-feedback" th:errors="*{inscricaoId}"></div>
+        </div>
+        <div class="col-12 col-md-6">
+            <label for="disciplinaId" class="form-label">Disciplina *</label>
+            <select id="disciplinaId" th:field="*{disciplinaId}" class="form-select"
+                    th:classappend="${#fields.hasErrors('disciplinaId')} ? 'is-invalid'">
+                <option value="">Selecione...</option>
+                <option th:each="d : ${disciplinas}" th:value="${d.id}" th:text="${d.name}"></option>
+            </select>
+            <div class="invalid-feedback" th:errors="*{disciplinaId}"></div>
+        </div>
+        <div class="col-12 col-md-4">
+            <label for="gradeType" class="form-label">Tipo *</label>
+            <select id="gradeType" th:field="*{gradeType}" class="form-select"
+                    th:classappend="${#fields.hasErrors('gradeType')} ? 'is-invalid'">
+                <option value="">Selecione...</option>
+                <option th:each="t : ${gradeTypes}" th:value="${t}" th:text="${t.label}"></option>
+            </select>
+            <div class="invalid-feedback" th:errors="*{gradeType}"></div>
+        </div>
+        <div class="col-12 col-md-4">
+            <label for="value" class="form-label">Nota (0–20) *</label>
+            <input type="number" step="0.01" min="0" max="20" id="value" th:field="*{value}" class="form-control"
+                   th:classappend="${#fields.hasErrors('value')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{value}"></div>
+        </div>
+        <div class="col-12">
+            <label for="observation" class="form-label">Observação</label>
+            <textarea id="observation" th:field="*{observation}" class="form-control" rows="2"
+                      th:classappend="${#fields.hasErrors('observation')} ? 'is-invalid'"></textarea>
+            <div class="invalid-feedback" th:errors="*{observation}"></div>
+        </div>
+    </div>
+    <div class="d-grid d-sm-flex gap-2 mt-4">
+        <button type="submit" class="btn btn-dunamis">Guardar</button>
+        <a href="/admin/notas" class="btn btn-dunamis-outline">Cancelar</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Meu perfil')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/member-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+                        <h1 class="h4 mb-0">Meu perfil</h1>
+                        <a href="/dashboard/perfil/editar" class="btn btn-dunamis-outline btn-sm">Editar</a>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Nome</span>
+                            <strong th:text="${user.fullName}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Contacto</span>
+                            <strong th:text="${user.contacto}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Email</span>
+                            <strong th:text="${user.email != null ? user.email : '—'}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Bairro</span>
+                            <strong th:text="${user.bairro}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Situação</span>
+                            <strong th:text="${user.churchSituation.label}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Função</span>
+                            <strong th:text="${user.churchFunction.label}">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Batizado</span>
+                            <strong th:text="${user.baptized} ? 'Sim' : 'Não'">—</strong>
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between">
+                            <span class="text-muted">Escola Bíblica</span>
+                            <strong th:text="${enrolled} ? 'Inscrito' : 'Não inscrito'">—</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Acesso negado')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-public}"></nav>
+
+<main class="container error-page flex-grow-1">
+    <div>
+        <div class="error-code">403</div>
+        <h1 class="h4 mb-2">Acesso negado</h1>
+        <p class="text-muted mb-4">Não tem permissão para aceder a esta página.</p>
+        <a href="/" class="btn btn-dunamis">Voltar ao início</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

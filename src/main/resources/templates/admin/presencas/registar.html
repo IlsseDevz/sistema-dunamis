@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Registar presenças')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/layout :: navbar-auth}"></nav>
+
+<main id="main-content" class="container flex-grow-1 py-4">
+    <div class="row g-4">
+        <div class="col-12 col-lg-3">
+            <nav th:replace="~{fragments/admin-menu :: menu(${activeMenu})}"></nav>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="card card-dunamis">
+                <div class="card-body p-4">
+                    <h1 class="h4 mb-4">Registar presenças</h1>
+
+                    <form th:action="@{/admin/presencas/registar}" th:object="${batch}" method="post" novalidate>
+                        <div class="mb-4">
+                            <label for="attendanceDate" class="form-label">Data *</label>
+                            <input type="date" id="attendanceDate" th:field="*{attendanceDate}" class="form-control"
+                                   th:classappend="${#fields.hasErrors('attendanceDate')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:errors="*{attendanceDate}"></div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table align-middle attendance-table">
+                                <thead class="table-light">
+                                <tr>
+                                    <th>Aluno</th>
+                                    <th>Presente</th>
+                                    <th>Ausente</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="attendance-row" th:each="e, stat : ${enrollments}">
+                                    <td th:text="${e.user.fullName}">—</td>
+                                    <td>
+                                        <input type="hidden" th:field="*{items[__${stat.index}__].inscricaoId}"
+                                               th:value="${e.id}">
+                                        <input class="form-check-input" type="radio"
+                                               th:field="*{items[__${stat.index}__].present}"
+                                               th:value="true">
+                                    </td>
+                                    <td>
+                                        <input class="form-check-input" type="radio"
+                                               th:field="*{items[__${stat.index}__].present}"
+                                               th:value="false">
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(enrollments)}">
+                                    <td colspan="3" class="text-center text-muted py-4">Nenhum aluno inscrito.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-grid d-sm-flex gap-2 mt-3">
+                            <button type="submit" class="btn btn-dunamis" th:disabled="${#lists.isEmpty(enrollments)}">
+                                Guardar presenças
+                            </button>
+                            <a href="/admin/presencas" class="btn btn-dunamis-outline">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

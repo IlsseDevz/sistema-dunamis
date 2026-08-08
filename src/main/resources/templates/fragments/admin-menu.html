@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="menu-items(activeMenu)" class="list-group list-group-flush admin-menu-list">
+    <a href="/admin" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'dashboard'} ? 'active'">Dashboard</a>
+    <a href="/admin/membros" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'membros'} ? 'active'">Membros</a>
+    <a href="/admin/escola-biblica" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'escola'} ? 'active'">Escola Bíblica</a>
+    <a href="/admin/alunos" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'alunos'} ? 'active'">Alunos</a>
+    <a href="/admin/turma" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'turma'} ? 'active'">Turma</a>
+    <a href="/admin/disciplinas" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'disciplinas'} ? 'active'">Disciplinas</a>
+    <a href="/admin/notas" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'notas'} ? 'active'">Notas</a>
+    <a href="/admin/presencas" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'presencas'} ? 'active'">Presenças</a>
+    <a href="/admin/relatorios" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'relatorios'} ? 'active'">Relatórios</a>
+    <a href="/admin/configuracoes" class="list-group-item list-group-item-action"
+       th:classappend="${activeMenu == 'configuracoes'} ? 'active'">Configurações</a>
+    <form th:action="@{/logout}" method="post" class="mt-2">
+        <button type="submit" class="list-group-item list-group-item-action text-danger border-0 w-100 text-start">
+            Sair
+        </button>
+    </form>
+</div>
+
+<nav th:fragment="menu(activeMenu)" class="panel-nav">
+    <div class="d-none d-lg-block">
+        <div class="admin-menu card card-dunamis">
+            <div class="card-body p-3">
+                <h2 class="h6 text-uppercase text-muted mb-3">Administração</h2>
+                <div th:replace="~{fragments/admin-menu :: menu-items(${activeMenu})}"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-lg-none mb-3">
+        <button type="button" class="btn btn-dunamis-outline w-100 panel-menu-toggle"
+                data-bs-toggle="offcanvas" data-bs-target="#adminPanelMenu"
+                aria-controls="adminPanelMenu">
+            Menu de administração
+        </button>
+    </div>
+
+    <div class="offcanvas offcanvas-start panel-offcanvas d-lg-none" tabindex="-1"
+         id="adminPanelMenu" aria-labelledby="adminPanelMenuLabel">
+        <div class="offcanvas-header panel-offcanvas-header">
+            <h2 class="offcanvas-title h5 mb-0" id="adminPanelMenuLabel">Administração</h2>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                    aria-label="Fechar"></button>
+        </div>
+        <div class="offcanvas-body p-3">
+            <div th:replace="~{fragments/admin-menu :: menu-items(${activeMenu})}"></div>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>
+
