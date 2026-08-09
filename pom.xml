@@ -71,6 +71,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Flyway DB migrations -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
         <!-- Dev tools (apenas desenvolvimento) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -83,7 +89,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <!-- Available in runtime for local testing -->
         </dependency>
 
         <!-- Test -->

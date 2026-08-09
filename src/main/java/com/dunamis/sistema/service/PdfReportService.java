@@ -24,14 +24,9 @@ import java.util.Locale;
 @Service
 public class PdfReportService {
 
-    private static final Color HEADER_BG = new Color(45, 55, 72);
-    private static final Color HEADER_TEXT = Color.WHITE;
-    private static final Color ROW_ALT = new Color(248, 249, 250);
-    private static final DateTimeFormatter GENERATED_AT =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", new Locale("pt", "PT"));
-
-    public byte[] generateBibleSchoolReport(BibleSchoolReportData data) {
-        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+    // Streaming variants write directly to an OutputStream to avoid holding large PDFs in memory.
+    public void generateBibleSchoolReport(BibleSchoolReportData data, java.io.OutputStream output) {
+        try {
             Document document = new Document(PageSize.A4, 48, 48, 56, 48);
             PdfWriter.getInstance(document, output);
             document.open();
@@ -55,14 +50,14 @@ public class PdfReportService {
 
             addFooter(document);
             document.close();
-            return output.toByteArray();
+            output.flush();
         } catch (Exception ex) {
             throw new IllegalStateException("Não foi possível gerar o relatório PDF da Escola Bíblica.", ex);
         }
     }
 
-    public byte[] generateChurchReport(ChurchReportData data) {
-        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+    public void generateChurchReport(ChurchReportData data, java.io.OutputStream output) {
+        try {
             Document document = new Document(PageSize.A4, 48, 48, 56, 48);
             PdfWriter.getInstance(document, output);
             document.open();
@@ -99,11 +94,36 @@ public class PdfReportService {
 
             addFooter(document);
             document.close();
+            output.flush();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Não foi possível gerar o relatório PDF da igreja.", ex);
+        }
+    }
+
+    // Backwards-compatible byte[] variants (used by older callers)
+    public byte[] generateBibleSchoolReport(BibleSchoolReportData data) {
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            generateBibleSchoolReport(data, output);
+            return output.toByteArray();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Não foi possível gerar o relatório PDF da Escola Bíblica.", ex);
+        }
+    }
+
+    public byte[] generateChurchReport(ChurchReportData data) {
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            generateChurchReport(data, output);
             return output.toByteArray();
         } catch (Exception ex) {
             throw new IllegalStateException("Não foi possível gerar o relatório PDF da igreja.", ex);
         }
     }
+
+    private static final Color HEADER_BG = new Color(45, 55, 72);
+    private static final Color HEADER_TEXT = Color.WHITE;
+    private static final Color ROW_ALT = new Color(248, 249, 250);
+    private static final DateTimeFormatter GENERATED_AT =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", new Locale("pt", "PT"));
 
     private void addTitle(Document document, String text) throws DocumentException {
         Font font = new Font(Font.HELVETICA, 18, Font.BOLD, HEADER_BG);

@@ -26,12 +26,13 @@ public class DataInitializer {
     CommandLineRunner seedReferenceData(
             RoleRepository roleRepository,
             ChurchFunctionRepository churchFunctionRepository,
-            TurmaRepository turmaRepository
+            TurmaRepository turmaRepository,
+            org.springframework.core.env.Environment env
     ) {
         return args -> {
             seedRoles(roleRepository);
             seedChurchFunctions(churchFunctionRepository);
-            seedDefaultTurma(turmaRepository);
+            seedDefaultTurma(turmaRepository, env);
         };
     }
 
@@ -67,7 +68,14 @@ public class DataInitializer {
         }
     }
 
-    private void seedDefaultTurma(TurmaRepository turmaRepository) {
+    private void seedDefaultTurma(TurmaRepository turmaRepository, org.springframework.core.env.Environment env) {
+        // Skip creating a default turma during tests to avoid interfering with test data
+        for (String profile : env.getActiveProfiles()) {
+            if ("test".equals(profile)) {
+                return;
+            }
+        }
+
         if (turmaRepository.findByStatus(TurmaStatus.ACTIVE).isEmpty()) {
             Turma turma = new Turma();
             turma.setName("Turma " + Year.now().getValue());

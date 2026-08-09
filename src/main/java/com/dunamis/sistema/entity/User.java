@@ -49,6 +49,9 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Column(name = "failed_login_attempts", nullable = false)
+    private Integer failedLoginAttempts = 0;
+
     @Column(nullable = false, length = 100)
     private String bairro;
 
@@ -131,6 +134,14 @@ public class User {
         this.password = password;
     }
 
+    public Integer getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(Integer failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
+    }
+
     public String getBairro() {
         return bairro;
     }
@@ -184,7 +195,8 @@ public class User {
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        // Defensive copy: ensure internal collection is mutable to avoid UnsupportedOperationException
+        this.roles = (roles == null) ? new HashSet<>() : new HashSet<>(roles);
     }
 
     public Set<Inscricao> getInscricoes() {

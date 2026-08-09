@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL;INIT=CREATE SCHEMA IF NOT EXISTS dunamis
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -16,15 +16,19 @@ spring:
 
   h2:
     console:
-      enabled: false
-
-  main:
-    lazy-initialization: true
+      enabled: true
+      path: /h2-console
 
   flyway:
     enabled: false
 
-app:
-  security:
-    rateLimiter:
-      enabled: false
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.dunamis.sistema: DEBUG
+    org.springframework.security: INFO
