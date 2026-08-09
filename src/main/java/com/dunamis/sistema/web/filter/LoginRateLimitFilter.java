@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.core.env.Environment;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -17,6 +18,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class LoginRateLimitFilter extends OncePerRequestFilter {
+
+    private final Environment env;
+
+    public LoginRateLimitFilter(Environment env) {
+        this.env = env;
+    }
 
     private static final int MAX_ATTEMPTS = 5;
     private static final Duration WINDOW = Duration.ofMinutes(1);
@@ -34,6 +41,11 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // Rate limiter can be disabled via property (useful for tests)
+        String enabled = env.getProperty("app.security.rateLimiter.enabled", "true");
+        if ("false".equalsIgnoreCase(enabled)) {
+            return true;
+        }
         // Filter only POST requests targeting the /login endpoint
         return !("POST".equalsIgnoreCase(request.getMethod()) && request.getRequestURI() != null && request.getRequestURI().endsWith("/login"));
     }

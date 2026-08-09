@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@org.springframework.test.context.TestPropertySource(properties = "app.security.rateLimiter.enabled=true")
 @Transactional
 public class LoginRateLimitTest {
 

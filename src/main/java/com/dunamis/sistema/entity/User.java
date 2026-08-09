@@ -195,7 +195,8 @@ public class User {
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        // Defensive copy: ensure internal collection is mutable to avoid UnsupportedOperationException
+        this.roles = (roles == null) ? new HashSet<>() : new HashSet<>(roles);
     }
 
     public Set<Inscricao> getInscricoes() {
