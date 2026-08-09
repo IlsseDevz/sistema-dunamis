@@ -12,6 +12,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+        globally_quoted_identifiers: true
 
   h2:
     console:
@@ -22,8 +23,3 @@ spring:
 
   flyway:
     enabled: false
-
-  jpa:
-    properties:
-      hibernate:
-        globally_quoted_identifiers: true
