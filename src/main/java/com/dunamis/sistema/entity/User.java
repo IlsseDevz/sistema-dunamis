@@ -49,6 +49,9 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Column(name = "failed_login_attempts", nullable = false)
+    private Integer failedLoginAttempts = 0;
+
     @Column(nullable = false, length = 100)
     private String bairro;
 
@@ -129,6 +132,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(Integer failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
     }
 
     public String getBairro() {
