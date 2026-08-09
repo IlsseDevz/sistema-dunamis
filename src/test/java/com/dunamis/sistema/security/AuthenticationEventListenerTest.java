@@ -23,6 +23,8 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -58,7 +60,11 @@ public class AuthenticationEventListenerTest {
         // perform failed attempts (listener marks account inactive after 5 attempts)
         for (int i = 0; i < 6; i++) {
             final String remote = "10.0.0." + i; // vary IP to bypass IP-based rate limiter
-            mockMvc.perform(formLogin("/login").user("923800001").password("wrongpass").with(request -> { request.setRemoteAddr(remote); return request; }));
+            mockMvc.perform(post("/login")
+                    .param("username", "923800001")
+                    .param("password", "wrongpass")
+                    .with(csrf())
+                    .with(request -> { request.setRemoteAddr(remote); return request; }));
         }
 
         User user = userRepository.findByContacto("923800001").orElseThrow();
