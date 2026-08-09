@@ -77,13 +77,6 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
-        <!-- Rate limiting (Bucket4j) -->
-        <dependency>
-            <groupId>com.github.bucket4j</groupId>
-            <artifactId>bucket4j-core</artifactId>
-            <version>9.1.2</version>
-        </dependency>
-
         <!-- Dev tools (apenas desenvolvimento) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
