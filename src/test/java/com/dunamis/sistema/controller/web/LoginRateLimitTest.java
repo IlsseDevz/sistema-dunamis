@@ -50,20 +50,23 @@ public class LoginRateLimitTest {
         if (roleRepository.findByName(RoleName.ROLE_MEMBER).isEmpty()) {
             roleRepository.save(new Role(RoleName.ROLE_MEMBER));
         }
-        // create a user
-        saveUser("923700001", Set.of(RoleName.ROLE_MEMBER));
+        // create several users for rate limit test
+        for (int i = 1; i <= 6; i++) {
+            saveUser(String.format("923700%03d", i), Set.of(RoleName.ROLE_MEMBER));
+        }
     }
 
     @Test
     void shouldRateLimitAfterMaxAttempts() throws Exception {
-        // perform 6 failed login attempts; default limiter allows 5 per minute
-        for (int i = 0; i < 5; i++) {
-            mockMvc.perform(formLogin("/login").user("923700001").password("wrongpass"))
+        // perform failed login attempts for different users from same IP; limiter allows 5 per minute
+        for (int i = 1; i <= 5; i++) {
+            String contacto = String.format("923700%03d", i);
+            mockMvc.perform(formLogin("/login").user(contacto).password("wrongpass"))
                     .andExpect(status().is3xxRedirection());
         }
 
-        // 6th attempt should be rate limited
-        mockMvc.perform(formLogin("/login").user("923700001").password("wrongpass"))
+        // 6th distinct user attempt from same IP should be rate limited
+        mockMvc.perform(formLogin("/login").user("923700006").password("wrongpass"))
                 .andExpect(status().isTooManyRequests());
     }
 
