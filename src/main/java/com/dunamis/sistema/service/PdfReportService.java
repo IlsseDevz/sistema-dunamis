@@ -24,6 +24,101 @@ import java.util.Locale;
 @Service
 public class PdfReportService {
 
+    // Streaming variants write directly to an OutputStream to avoid holding large PDFs in memory.
+    public void generateBibleSchoolReport(BibleSchoolReportData data, java.io.OutputStream output) {
+        try {
+            Document document = new Document(PageSize.A4, 48, 48, 56, 48);
+            PdfWriter.getInstance(document, output);
+            document.open();
+
+            addTitle(document, "Relatório Mensal — Escola Bíblica");
+            addSubtitle(document, data.getChurchName());
+            addSubtitle(document, data.getBibleSchoolName());
+            addPeriod(document, data.getPeriodLabel());
+            document.add(spacer());
+
+            PdfPTable table = newTable(2);
+            addRow(table, "Total de alunos activos", String.valueOf(data.getTotalStudents()));
+            addRow(table, "Alunos com presença no período", String.valueOf(data.getStudentsPresent()));
+            addRow(table, "Alunos sem presença no período", String.valueOf(data.getStudentsAbsent()));
+            addRow(table, "Registos de presença", String.valueOf(data.getTotalAttendanceRecords()));
+            addRow(table, "Presenças registadas", String.valueOf(data.getPresentRecords()));
+            addRow(table, "Ausências registadas", String.valueOf(data.getAbsentRecords()));
+            addRow(table, "Percentagem de presença", formatPercentage(data.getAttendancePercentage()));
+            addRow(table, "Média das notas do período", formatGrade(data.getAverageGrade()));
+            document.add(table);
+
+            addFooter(document);
+            document.close();
+            output.flush();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Não foi possível gerar o relatório PDF da Escola Bíblica.", ex);
+        }
+    }
+
+    public void generateChurchReport(ChurchReportData data, java.io.OutputStream output) {
+        try {
+            Document document = new Document(PageSize.A4, 48, 48, 56, 48);
+            PdfWriter.getInstance(document, output);
+            document.open();
+
+            addTitle(document, "Relatório Mensal — Igreja");
+            addSubtitle(document, data.getChurchName());
+            addPeriod(document, data.getPeriodLabel());
+            document.add(spacer());
+
+            PdfPTable stats = newTable(2);
+            addRow(stats, "Total de membros cadastrados", String.valueOf(data.getTotalRegistered()));
+            addRow(stats, "Membros activos", String.valueOf(data.getActiveMembers()));
+            addRow(stats, "Novos convertidos", String.valueOf(data.getNewConverts()));
+            addRow(stats, "Visitantes", String.valueOf(data.getVisitors()));
+            addRow(stats, "Batizados", String.valueOf(data.getBaptized()));
+            addRow(stats, "Não batizados", String.valueOf(data.getNotBaptized()));
+            addRow(stats, "Novos cadastros no período", String.valueOf(data.getNewRegistrationsInPeriod()));
+            document.add(stats);
+
+            document.add(spacer());
+            document.add(sectionHeading("Distribuição por função na igreja"));
+
+            PdfPTable functions = newTable(2);
+            addHeader(functions, "Função", "Quantidade");
+            boolean alternate = false;
+            for (ChurchReportData.FunctionCount item : data.getFunctionDistribution()) {
+                addDataRow(functions, item.getFunctionLabel(), String.valueOf(item.getCount()), alternate);
+                alternate = !alternate;
+            }
+            if (data.getFunctionDistribution().isEmpty()) {
+                addDataRow(functions, "Sem dados", "—", false);
+            }
+            document.add(functions);
+
+            addFooter(document);
+            document.close();
+            output.flush();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Não foi possível gerar o relatório PDF da igreja.", ex);
+        }
+    }
+
+    // Backwards-compatible byte[] variants (used by older callers)
+    public byte[] generateBibleSchoolReport(BibleSchoolReportData data) {
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            generateBibleSchoolReport(data, output);
+            return output.toByteArray();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Não foi possível gerar o relatório PDF da Escola Bíblica.", ex);
+        }
+    }
+
+    public byte[] generateChurchReport(ChurchReportData data) {
+        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            generateChurchReport(data, output);
+            return output.toByteArray();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Não foi possível gerar o relatório PDF da igreja.", ex);
+        }
+    }
+
     private static final Color HEADER_BG = new Color(45, 55, 72);
     private static final Color HEADER_TEXT = Color.WHITE;
     private static final Color ROW_ALT = new Color(248, 249, 250);

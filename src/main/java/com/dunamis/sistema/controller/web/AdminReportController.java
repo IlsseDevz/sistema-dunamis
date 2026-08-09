@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.time.YearMonth;
 
@@ -46,10 +47,13 @@ public class AdminReportController {
             return "admin/relatorios/index";
         }
 
-        byte[] pdf = pdfReportService.generateBibleSchoolReport(
-                reportDataService.buildBibleSchoolReport(period.getMonth(), period.getYear())
-        );
-        return pdfResponse(pdf, fileName("escola-biblica", period));
+        var data = reportDataService.buildBibleSchoolReport(period.getMonth(), period.getYear());
+        StreamingResponseBody stream = outputStream -> pdfReportService.generateBibleSchoolReport(data, outputStream);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName("escola-biblica", period) + "\"")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(stream);
     }
 
     @PostMapping("/igreja/pdf")
@@ -63,10 +67,13 @@ public class AdminReportController {
             return "admin/relatorios/index";
         }
 
-        byte[] pdf = pdfReportService.generateChurchReport(
-                reportDataService.buildChurchReport(period.getMonth(), period.getYear())
-        );
-        return pdfResponse(pdf, fileName("igreja", period));
+        var data = reportDataService.buildChurchReport(period.getMonth(), period.getYear());
+        StreamingResponseBody stream = outputStream -> pdfReportService.generateChurchReport(data, outputStream);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName("igreja", period) + "\"")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(stream);
     }
 
     private void preparePage(Model model, ReportPeriodRequest period) {
