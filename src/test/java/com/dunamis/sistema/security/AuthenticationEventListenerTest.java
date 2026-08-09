@@ -57,7 +57,8 @@ public class AuthenticationEventListenerTest {
     void failedAttemptsShouldLockAccount() throws Exception {
         // perform failed attempts (listener marks account inactive after 5 attempts)
         for (int i = 0; i < 6; i++) {
-            mockMvc.perform(formLogin("/login").user("923800001").password("wrongpass"));
+            final String remote = "10.0.0." + i; // vary IP to bypass IP-based rate limiter
+            mockMvc.perform(formLogin("/login").user("923800001").password("wrongpass").with(request -> { request.setRemoteAddr(remote); return request; }));
         }
 
         User user = userRepository.findByContacto("923800001").orElseThrow();
