@@ -19,3 +19,6 @@ spring:
 
   main:
     lazy-initialization: true
+
+  flyway:
+    enabled: false
