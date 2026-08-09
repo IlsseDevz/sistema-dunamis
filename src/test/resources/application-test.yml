@@ -22,3 +22,8 @@ spring:
 
   flyway:
     enabled: false
+
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
